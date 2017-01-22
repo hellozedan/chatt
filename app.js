@@ -86,6 +86,18 @@ app.use(express.static(path.join(__dirname, 'public')));
 //    }
 //  }
 //});
+
+/*version number ios&android*/
+// app.use(function(req, res, next) {
+//   res.setHeader('iosv', '1');
+//   res.setHeader('androidv', '1');
+//   next();
+// });
+app.get('/updateversiom', function (req, res) {
+  res.render('updateversiom.jade',
+      { title : 'Home' }
+  )
+})
 app.use(function(req, res, next) {
   //console.log('req.body: ' + req.body)
   //console.log('Loading x-access-token -- begin.');
@@ -135,6 +147,9 @@ app.use(function(req, res, next) {
   }
 });
 var fbController = require('./controllers/fbController');
+app.get('/api/version', function (req, res) {
+  res.send({isNeedToUpdate:false});
+});
 app.post('/api/getu/:fbUserToken', function (req, res) {
   console.log('triggered /getu - start getting user data from FB')
   fbController.getUserData(req, req.params.fbUserToken, function (currentBtToken,_id, err) {
