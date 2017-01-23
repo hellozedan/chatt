@@ -77,6 +77,9 @@ var notificationController = function (User) {
                         newReq.write(postData);
                         newReq.end();
                     }
+                    else{
+                        res.status(500).send("user logout");
+                    }
                 }
             }
         });
