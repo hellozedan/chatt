@@ -15,6 +15,7 @@
     "firebase-token-generator": "^2.0.0",
     "https": "^1.0.0",
     "jade": "~1.11.0",
+    "kerberos": "0.0.22",
     "moment": "^2.10.6",
     "mongoose": "^4.2.5",
     "morgan": "~1.6.1",
