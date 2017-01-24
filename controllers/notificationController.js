@@ -38,6 +38,7 @@ var notificationController = function (User) {
                             data: {
                                 conversationId: req.body.conversationId,
                                 userName: req.body.userName,
+                                first_name: req.body.first_name,
                                 subjectName: req.body.subjectName,
                                 fbPhotoUrl: req.body.fbPhotoUrl
                             }
