@@ -38,7 +38,7 @@ var subjectController = function (Subject) {
 
 		var post = function (req, res) {
 			var newSubject = req.body;
-			if(!newSubject._id) {
+			if (!newSubject._id) {
 				var create_date = new Date();
 				newSubject.create_date = create_date;
 				newSubject.unix_date = create_date.valueOf();
@@ -55,30 +55,45 @@ var subjectController = function (Subject) {
 				newSubject.user = req.authuser._id;
 				newSubject.gender = req.authuser.gender;
 				var subject = new Subject(newSubject);
-				subject.save(function (e) {
-					if (e) {
-						console.log('error: ' + e);
+				var mySubjectsQuery = {user:req.authuser._id,status:true};
+				var now = new Date();
+				now.setHours(now.getHours() - subjectsDuration);
+				mySubjectsQuery.create_date = {
+					$gte: now
+				}
+				Subject.count(mySubjectsQuery)
+					.exec(
+						function (err, mySubjectsCount) {
+							if (err) {
+								console.log(err);
+								res.status(500).send(err);
+							} else {
+								if (mySubjectsCount >= 5) {
+									subject.status = false;
+								}
+								subject.save(function (e) {
+									if (e) {
+										console.log('error: ' + e);
+										res.status(500).send(err);
+									} else {
+										console.log('no error');
+										res.status(201).send(subject);
+									}
+								});
+							}
+						});
+			}
+			else {
+				var query = {_id: newSubject._id};
+				Subject.update(query, {description: newSubject.description}, {}, callback);
+				function callback(err, numAffected) {
+					if (err) {
+						console.log('error: ' + err);
 						res.status(500).send(err);
 					} else {
 						console.log('no error');
-						res.status(201).send(subject);
+						res.status(201).send(numAffected);
 					}
-				});
-				//    }
-				//});
-			}
-			else
-			{
-				var query = { _id: newSubject._id };
-				Subject.update(query, { description: newSubject.description }, {}, callback);
-				function callback (err, numAffected) {
-					if (err) {
-					console.log('error: ' + err);
-					res.status(500).send(err);
-				} else {
-					console.log('no error');
-					res.status(201).send(numAffected);
-				}
 					// numAffected is the number of updated documents
 				}
 			}
@@ -160,7 +175,7 @@ var subjectController = function (Subject) {
 			if (req.body && req.body.gender && req.body.gender !== "both") {
 				query.gender = req.body.gender;
 			}
-			if (req.body && (req.body.status != undefined||req.query.status != undefined)) {
+			if (req.body && (req.body.status != undefined || req.query.status != undefined)) {
 				query.status = req.body.status || req.query.status;
 			}
 			if (req.body && req.body.categories && req.body.categories.length > 0) {
