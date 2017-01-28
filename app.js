@@ -10,6 +10,7 @@ var mongoose = require('mongoose');
 var db = mongoose.connect('mongodb://admin:sa1234@ds032319.mlab.com:32319/mydb');
 var User = require('./models/user');
 var Subject = require('./models/subject');
+var SugSubject = require('./models/sugSubject');
 //var Activity = require('./models/activity');
 //var Message = require('./models/message');
 
@@ -18,6 +19,7 @@ var userRouter = require("./routes/userRoutes")(User);
 var notificationRouter = require("./routes/notificationRoutes")(User);
 
 var subjectRouter = require("./routes/subjectRoutes")(Subject);
+var sugSubjectRouter = require("./routes/sugSubjectRoutes")(SugSubject);
 //var activityRouter = require("./routes/activityRoutes")(Activity);
 //var messageRouter = require("./routes/messageRoutes")(Message);
 var facebookRouter = require("./routes/subjectRoutes")(Subject);
@@ -166,6 +168,7 @@ app.use('/categories', express.static(__dirname + '/categories'));
 app.use('/', routes);
 app.use('/api/users', userRouter);
 app.use('/api/subjects', subjectRouter);
+app.use('/api/sugSubjects', sugSubjectRouter);
 app.use('/api/notification', notificationRouter);
 app.use('/api/facebook', notificationRouter);
 
