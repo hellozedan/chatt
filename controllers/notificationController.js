@@ -40,6 +40,7 @@ var notificationController = function (User) {
                                 userName: req.body.userName,
                                 first_name: req.body.first_name,
                                 subjectName: req.body.subjectName,
+                                desc: req.body.desc,
                                 fbPhotoUrl: req.body.fbPhotoUrl
                             }
                         });
